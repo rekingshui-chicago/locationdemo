@@ -79,6 +79,13 @@
 <body>
 
     <script>
+        // center the marker in the map
+        function centerLeafletMapOnMarker(map, marker) {
+            var latLngs = [marker.getLatLng()];
+            var markerBounds = L.latLngBounds(latLngs);
+            map.fitBounds(markerBounds);
+        }
+
         // check the input is a valid IP address
         function checkIP(val) {
             var re = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
@@ -115,10 +122,10 @@
                     success: function(result) {
                         var info = JSON.parse(JSON.stringify(result, "", 2));
                         currentInfo = JSON.stringify(info.as, "", 2);
-                        L.marker([info.location.lat, info.location.lng]).addTo(mymap)
+                        var marker = L.marker([info.location.lat, info.location.lng]);
+                        marker.addTo(mymap)
                             .bindPopup(currentInfo).openPopup();
-
-                        $("loader").hide();
+                        centerLeafletMapOnMarker(mymap, marker);
                     },
                     error: function() {
                         alert("Someting wrong!");
@@ -142,8 +149,10 @@
                     success: function(result) {
                         var info = JSON.parse(JSON.stringify(result, "", 2));
                         currentInfo = JSON.stringify(info.as, "", 2);
-                        L.marker([info.location.lat, info.location.lng]).addTo(mymap)
+                        var marker = L.marker([info.location.lat, info.location.lng]);
+                        marker.addTo(mymap)
                             .bindPopup(currentInfo).openPopup();
+                        centerLeafletMapOnMarker(mymap, marker);
                     },
                     error: function() {
                         alert("Something wrong!");
