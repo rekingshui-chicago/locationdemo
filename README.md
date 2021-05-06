@@ -20,7 +20,7 @@ This is a demo single page application for Webster University Web Engineer posit
 8. The search button text will become to "Searching..." and disabled after user pressed the search to indicates the searching is ongoing.
 9. The search button will return to normal after the ajax return the query result.
 
-**The deployed URL: **
+**The deployed URL:**
 
 https://rekingshui-stl.github.io/locationdemo/demo.html
 
