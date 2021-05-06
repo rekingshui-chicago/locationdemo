@@ -5,10 +5,35 @@
     <title>Webster University Tech Demo</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html,
+        body {
+            height: 80%;
+            margin: 10;
+        }
+        
+        #map {
+            align-content: center;
+            width: 600px;
+            height: 400px;
+        }
+    </style>
 
+    <style>
+        body {
+            padding: 10;
+            margin: 0;
+        }
+        
+        #mapid {
+            align-content: center;
+            height: 100%;
+            width: 100vw;
+        }
+    </style>
     <br>
     <div align="center" ; margin-top:100px; margin-bottom: 100px>
-        <h1 style="font-size:200%"> Locate the Domain/IP Demo</h1>
+        <h1 style="font-size:150%"> Locate the Domain/IP Demo</h1>
         <p>This demo is only for Webster University Web Engineer posistion tech demonstration.</p>
         <br>
 
@@ -18,35 +43,37 @@
     </div>
     <br>
 
-    <div id="mapid" style="width: 1024px; height: 600px; align-content: center; margin:0 auto; border:1px">
-    </div>
-    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        // initialize the map controller
-        var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    <div id="mapid" class="map">
 
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1
-        }).addTo(mymap);
+        <!-- <div id="mapid" style="width: 800px; height: 500px; align-content: center; margin:0 auto; border:1px"> -->
 
-        var currentUserIP = "127.0.0.1";
-        var currentInfo = "";
-        $.getJSON("https://api.ipify.org?format=json",
-            function(data) {
-                // get current IP
-                currentUserIP = data.ip;
-                document.getElementById("iptosearch").value = currentUserIP;
-                searchIPLocation();
-            })
-    </script>
+        <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            // initialize the map controller
+            var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+
+            var maplayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1
+            }).addTo(mymap);
+
+            var currentUserIP = "127.0.0.1";
+            var currentInfo = "";
+            $.getJSON("https://api.ipify.org?format=json",
+                function(data) {
+                    // get current IP
+                    currentUserIP = data.ip;
+                    document.getElementById("iptosearch").value = currentUserIP;
+                    searchIPLocation();
+                })
+        </script>
 </head>
 
 <body>
@@ -66,7 +93,9 @@
             var tosearch = document.getElementById("iptosearch").value;
             var api_key = "at_cYg8RlATlG80lTAMKv7izyi2aVpCB";
 
-            $("loader").show();
+            //clear markers
+            L.layerGroup().clearLayers();
+
             if (checkIP(tosearch)) {
                 $.ajax({
                     url: "https://geo.ipify.org/api/v1",
